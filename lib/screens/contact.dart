@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:url_launcher/url_launcher.dart';
@@ -225,12 +224,7 @@ class _ContactUSState extends State<ContactUS> {
                 child: GestureDetector(
                   child: Padding(
                     padding: const EdgeInsets.all(18),
-                    child: Neumorphic(
-                      style: NeumorphicStyle(
-                          color: Color(0xffffffff),
-                          boxShape: NeumorphicBoxShape.roundRect(
-                              BorderRadius.circular(20))),
-                      child: Padding(
+                    child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           height: MediaQuery.of(context).size.height * 0.035,
@@ -249,7 +243,7 @@ class _ContactUSState extends State<ContactUS> {
                           ),
                         ),
                       ),
-                    ),
+                    
                   ),
                   onTap: () async {
                     //   var whatsappUrl =
@@ -265,12 +259,7 @@ class _ContactUSState extends State<ContactUS> {
                 child: GestureDetector(
                   child: Padding(
                     padding: const EdgeInsets.all(18),
-                    child: Neumorphic(
-                      style: NeumorphicStyle(
-                          color: Color(0xffffffff),
-                          boxShape: NeumorphicBoxShape.roundRect(
-                              BorderRadius.circular(20))),
-                      child: Padding(
+                    child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           height: MediaQuery.of(context).size.height * 0.035,
@@ -290,7 +279,7 @@ class _ContactUSState extends State<ContactUS> {
                           ),
                         ),
                       ),
-                    ),
+                    
                   ),
                   onTap: () async {
                     // if (await canLaunch("mailto:support@atuskart.com")) {

@@ -6,7 +6,6 @@ import 'package:delivery/screens/edit_account.dart';
 import 'package:delivery/utils/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'contact.dart';
 import 'login.dart';
@@ -65,12 +64,7 @@ class _ProfileState extends State<Profile> {
                         width: 120,
                         height: 120,
                         padding: EdgeInsets.all(4),
-                        child: Neumorphic(
-                          style: NeumorphicStyle(
-                              depth: 9,
-                              boxShape: NeumorphicBoxShape.circle(),
-                              shadowLightColor: Colors.transparent),
-                          child: ClipRRect(
+                        child: ClipRRect(
                             borderRadius: BorderRadius.circular(70.0),
                             child: snapshot.data['profile'] != null &&
                                     snapshot.data['profile'].isNotEmpty
@@ -84,8 +78,7 @@ class _ProfileState extends State<Profile> {
                                     child: Icon(Icons.person,
                                         size: 45, color: Color(0xff00D3FF)),
                                   ),
-                          ),
-                        ),
+                          ),                        
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0)

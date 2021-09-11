@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -62,9 +61,7 @@ class _EditAccountState extends State<EditAccount> {
           Container(width: 100,
             height: 100,
             padding: EdgeInsets.all(4),
-            child: Neumorphic(style: NeumorphicStyle(color: Colors.white,boxShape: NeumorphicBoxShape.circle(),shadowLightColor: Colors.white),
-              padding: EdgeInsets.all(4),
-              child: GestureDetector(
+            child:  GestureDetector(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(70.0),
                   child: img!=null?Image.file(img):url!=null&&url.isNotEmpty?CachedNetworkImage(imageUrl: url,
@@ -75,7 +72,7 @@ class _EditAccountState extends State<EditAccount> {
                   _bottom2(context);
                 },
               ),
-            ),
+            
           ),
           SizedBox(height: 30,),
           Padding(

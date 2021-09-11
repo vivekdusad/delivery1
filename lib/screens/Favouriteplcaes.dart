@@ -4,7 +4,7 @@ import 'package:delivery/components/ColumnComponent.dart';
 import 'package:delivery/utils/data.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+
 
 
 class FavouritePlaces extends StatefulWidget {
@@ -427,14 +427,7 @@ Container buildContainer(BuildContext context, String url) {
           padding: EdgeInsets.all(4),
           decoration:
               BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-          child: Neumorphic(
-            style: NeumorphicStyle(
-                depth: 10,
-                color: Colors.white,
-                boxShape: NeumorphicBoxShape.circle(),
-                shadowLightColor: Colors.blue),
-            padding: EdgeInsets.all(0),
-            child: ClipRRect(
+          child: ClipRRect(
               borderRadius: BorderRadius.circular(70.0),
               child: url != null && url.isNotEmpty
                   ? CachedNetworkImage(
@@ -451,7 +444,7 @@ Container buildContainer(BuildContext context, String url) {
                       ),
                     ),
             ),
-          ),
+          
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),

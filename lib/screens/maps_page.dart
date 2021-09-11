@@ -38,7 +38,7 @@ class _MapsPageState extends State<MapsPage> {
   }
 
   BitmapDescriptor pinLocationIcon;
-  Set<Marker> _markers = {};
+  
   Completer<GoogleMapController> _controller = Completer();
   final geo = Geoflutterfire();
   @override
@@ -65,29 +65,32 @@ class _MapsPageState extends State<MapsPage> {
           print(snapshot.error);
           print(snapshot.connectionState);
         }
-        if (snapshot.connectionState == ConnectionState.active ||
-            snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasData) {
-            final data = snapshot.data.data['location'] as GeoPoint;
-            return GoogleMap(
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-                setState(() {
-                  _markers.add(Marker(
-                      markerId: MarkerId('delivery'),
-                      position: LatLng(
-                          data.latitude, data.longitude),
-                      icon: pinLocationIcon));
-                });
-              },
-              markers: _markers,
-              initialCameraPosition: CameraPosition(
-                  zoom: 20,
-                  target:
-                      LatLng(data.latitude,data.longitude)),
-            );
-          }
+
+        if (snapshot.hasData) {
+          final data = snapshot.data.data['location'] as GeoPoint;
+          Set<Marker> _markers = {};
+          _markers.add(Marker(
+                    markerId: MarkerId('delivery${data.longitude}'),
+                    position: LatLng(data.latitude, data.longitude),
+                    icon: pinLocationIcon));
+              
+          print(data.latitude.toString() + "||" + data.longitude.toString());
+          return GoogleMap(
+            // onMapCreated: (GoogleMapController controller) {
+            //   _controller.complete(controller);
+            //   setState(() {
+            //     _markers.add(Marker(
+            //         markerId: MarkerId('delivery'),
+            //         position: LatLng(data.latitude, data.longitude),
+            //         icon: pinLocationIcon));
+            //   });
+            // },
+            markers: _markers,
+            initialCameraPosition: CameraPosition(
+                zoom: 20, target: LatLng(data.latitude, data.longitude)),
+          );
         }
+
         return Center(
           child: CircularProgressIndicator(),
         );

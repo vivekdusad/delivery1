@@ -6,7 +6,6 @@ import 'package:delivery/screens/login.dart';
 import 'package:delivery/screens/myorders.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -32,14 +31,7 @@ class CustomDrawer extends StatelessWidget {
               padding: EdgeInsets.all(4),
               decoration:
                   BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-              child: Neumorphic(
-                style: NeumorphicStyle(
-                    depth: 10,
-                    color: Colors.white,
-                    boxShape: NeumorphicBoxShape.circle(),
-                    shadowLightColor: Color(0xff00D3FF).withOpacity(0.1)),
-                padding: EdgeInsets.all(0),
-                child: ClipRRect(
+              child:ClipRRect(
                   borderRadius: BorderRadius.circular(70.0),
                   child: url != null && url.isNotEmpty
                       ? CachedNetworkImage(
@@ -53,7 +45,7 @@ class CustomDrawer extends StatelessWidget {
                               Icon(Icons.person, size: 45, color: Colors.white),
                         ),
                 ),
-              ),
+              
             ),
           ),
           Padding(
