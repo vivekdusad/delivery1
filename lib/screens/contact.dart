@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
 class ContactUS extends StatefulWidget {
@@ -24,7 +25,8 @@ class _ContactUSState extends State<ContactUS> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Color(0xff00D3FF),
+      appBar: AppBar(
+        backgroundColor: Color(0xff00D3FF),
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.close),
@@ -188,7 +190,7 @@ class _ContactUSState extends State<ContactUS> {
                 child: Ink(
                   decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Color(0xff00D3FF),Color(0xff00D3FF)],
+                        colors: [Color(0xff00D3FF), Color(0xff00D3FF)],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                       ),
@@ -225,33 +227,33 @@ class _ContactUSState extends State<ContactUS> {
                   child: Padding(
                     padding: const EdgeInsets.all(18),
                     child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.035,
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8, right: 8),
-                                child: Image.asset(
-                                  'assets/whats.png',
-                                  fit: BoxFit.contain,
-                                ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.035,
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: Image.asset(
+                                'assets/whats.png',
+                                fit: BoxFit.contain,
                               ),
-                              Text('WhatsApp',style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
+                            ),
+                            Text('WhatsApp',
+                                style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.bold)),
+                          ],
                         ),
                       ),
-                    
+                    ),
                   ),
                   onTap: () async {
-                    //   var whatsappUrl =
-                    //       "whatsapp://send?phone=+${917032779967}&text=Please discuss your issues here.....";
-                    //   await canLaunch(whatsappUrl)
-                    //       ? launch(whatsappUrl)
-                    //       : print(
-                    //           "open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
+                    var whatsappUrl =
+                        "whatsapp://send?phone=+${917032779967}&text=Please discuss your issues here.....";
+                    await canLaunch(whatsappUrl)
+                        ? launch(whatsappUrl)
+                        : print(
+                            "open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
                   },
                 ),
               ),
@@ -260,33 +262,35 @@ class _ContactUSState extends State<ContactUS> {
                   child: Padding(
                     padding: const EdgeInsets.all(18),
                     child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.035,
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8, right: 8),
-                                child: Image.asset(
-                                  'assets/gmail.png',
-                                  fit: BoxFit.contain,
-                                ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.035,
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 8),
+                              child: Image.asset(
+                                'assets/gmail.png',
+                                fit: BoxFit.contain,
                               ),
-                              Text('Gmail',style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
+                            ),
+                            Text(
+                              'Gmail',
+                              style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
                       ),
-                    
+                    ),
                   ),
                   onTap: () async {
-                    // if (await canLaunch("mailto:support@atuskart.com")) {
-                    //   await launch("mailto:support@atuskart.com");
-                    // } else {
-                    //   throw 'Could not launch';
-                    // }
+                    if (await canLaunch(
+                        "mailto:Customercare@deliverycartoons.com")) {
+                      await launch("mailto:Customercare@deliverycartoons.com");
+                    } else {
+                      throw 'Could not launch';
+                    }
                   },
                 ),
               ),

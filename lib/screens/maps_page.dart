@@ -38,7 +38,7 @@ class _MapsPageState extends State<MapsPage> {
   }
 
   BitmapDescriptor pinLocationIcon;
-  
+
   Completer<GoogleMapController> _controller = Completer();
   final geo = Geoflutterfire();
   @override
@@ -55,46 +55,70 @@ class _MapsPageState extends State<MapsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        bottomSheet: BottomSheet(
+          onClosing: () {},
+          builder: (context) {
+            return Container(
+              color: Colors.white,
+              padding: EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  Text(
+                    "Lakhan Sharma",
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  Spacer(),
+                  CircleAvatar(
+                    child: Icon(Icons.call),
+                  )
+                ],
+              ),
+            );
+          },
+        ),
         body: StreamBuilder<DocumentSnapshot>(
-      stream: Firestore.instance
-          .collection("DeliveryLocations")
-          .document('bHd3UsNnd42O7Vd4OTr0')
-          .snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          print(snapshot.error);
-          print(snapshot.connectionState);
-        }
+          stream: Firestore.instance
+              .collection("DeliveryLocations")
+              .document('bHd3UsNnd42O7Vd4OTr0')
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              print(snapshot.error);
+              print(snapshot.connectionState);
+            }
 
-        if (snapshot.hasData) {
-          final data = snapshot.data.data['location'] as GeoPoint;
-          Set<Marker> _markers = {};
-          _markers.add(Marker(
-                    markerId: MarkerId('delivery${data.longitude}'),
-                    position: LatLng(data.latitude, data.longitude),
-                    icon: pinLocationIcon));
-              
-          print(data.latitude.toString() + "||" + data.longitude.toString());
-          return GoogleMap(
-            // onMapCreated: (GoogleMapController controller) {
-            //   _controller.complete(controller);
-            //   setState(() {
-            //     _markers.add(Marker(
-            //         markerId: MarkerId('delivery'),
-            //         position: LatLng(data.latitude, data.longitude),
-            //         icon: pinLocationIcon));
-            //   });
-            // },
-            markers: _markers,
-            initialCameraPosition: CameraPosition(
-                zoom: 20, target: LatLng(data.latitude, data.longitude)),
-          );
-        }
+            if (snapshot.hasData) {
+              final data = snapshot.data.data['location'] as GeoPoint;
+              Set<Marker> _markers = {};
+              _markers.add(Marker(
+                  markerId: MarkerId('delivery${data.longitude}'),
+                  position: LatLng(data.latitude, data.longitude),
+                  icon: pinLocationIcon));
 
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    ));
+              print(
+                  data.latitude.toString() + "||" + data.longitude.toString());
+              return GoogleMap(
+                // onMapCreated: (GoogleMapController controller) {
+                //   _controller.complete(controller);
+                //   setState(() {
+                //     _markers.add(Marker(
+                //         markerId: MarkerId('delivery'),
+                //         position: LatLng(data.latitude, data.longitude),
+                //         icon: pinLocationIcon));
+                //   });
+                // },
+                markers: _markers,
+                initialCameraPosition: CameraPosition(
+                    zoom: 20, target: LatLng(data.latitude, data.longitude)),
+              );
+            }
+
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ));
   }
 }

@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class BNavigation extends StatefulWidget {
-  final GlobalKey<ScaffoldState> scaffoldKey;
+ 
 
-  const BNavigation(this.scaffoldKey);
+  const BNavigation();
 
   @override
   _BNavigationState createState() => _BNavigationState();

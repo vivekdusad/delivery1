@@ -1,22 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/components/BNavigation.dart';
+import 'package:delivery/components/home_skeleton.dart';
 import 'package:delivery/model/data_provider.dart';
 import 'package:delivery/screens/Search.dart';
-import 'package:delivery/screens/home/widgets/appbar.dart';
 import 'package:delivery/screens/home/widgets/banner.dart';
 import 'package:delivery/screens/home/widgets/categories.dart';
 import 'package:delivery/screens/home/widgets/drawer.dart';
 import 'package:delivery/screens/home/widgets/grocery.dart';
 import 'package:delivery/screens/home/widgets/medical.dart';
 import 'package:delivery/screens/home/widgets/restaurent.dart';
-import 'package:delivery/screens/maps_page.dart';
 import 'package:delivery/screens/select_region.dart';
 import 'package:delivery/utils/data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
+  HomeScreen();
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -24,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   PageController _myPage;
+  double radius;
   var selectedPage;
   int index = 0;
 
@@ -45,30 +47,46 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+  Future<double> getRadius() async {
+    final f = await FirebaseAuth.instance.currentUser();
+    final uid = f.uid;
+    final document =
+        await Firestore.instance.collection('Users').document(uid).get();
+    final data = document.data;
+    print("data" + data.toString());
+    return data['radius'];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
         appBar: Appbar(),
-        body: ListView(
-            shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
-            children: [
-              CustomBannerWidget(),
-              Padding(
-                padding: const EdgeInsets.all(10.0).copyWith(top: 10),
-                child: Text(
-                  "Categories",
-                  style: TextStyle(fontSize: 25),
-                ),
-              ),
-              CustomCategoriesSection(category: category),
-              GrocerySection(),
-              RestaurentSection(),
-              MedicalSection(),
-            ]),
+        body: FutureBuilder<double>(
+            future: getRadius(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                radius = snapshot.data;
+                print(radius);
+                return ListView(shrinkWrap: true, children: [
+                  CustomBannerWidget(),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0).copyWith(top: 10),
+                    child: Text(
+                      "Categories",
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                  CustomCategoriesSection(category: category),
+                  GrocerySection(radius: radius?.toInt()),
+                  RestaurentSection(radius: radius?.toInt()),
+                  MedicalSection(radius: radius?.toInt()),
+                ]);
+              }
+              return HomeSkeleton();
+            }),
         drawer: CustomDrawer(url: url),
-        bottomNavigationBar: BNavigation(_scaffoldKey));
+        bottomNavigationBar: BNavigation());
   }
 
   Appbar() {
@@ -166,10 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.blue,
             size: 30,
           ),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => MapsPage()));
-          },
+          onPressed: () {},
         )
       ],
     );

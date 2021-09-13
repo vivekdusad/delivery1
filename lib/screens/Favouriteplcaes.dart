@@ -310,7 +310,7 @@ class _FavouritePlacesState extends State<FavouritePlaces> {
                   ),
                 ]),
       drawer: buildContainer(context, url),
-      bottomNavigationBar: BNavigation(_scaffoldKey),
+      bottomNavigationBar: BNavigation(),
     );
   }
 }

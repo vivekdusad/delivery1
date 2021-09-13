@@ -7,7 +7,9 @@ import 'package:delivery/utils/const.dart';
 import 'package:flutter/material.dart';
 
 class RestaurentSection extends StatelessWidget {
+  final int radius;
   const RestaurentSection({
+    this.radius,
     Key key,
   }) : super(key: key);
 

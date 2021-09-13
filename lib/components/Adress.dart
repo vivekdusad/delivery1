@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/model/data_provider.dart';
 import 'package:delivery/screens/CheckOut.dart';
-import 'package:delivery/utils/data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -79,81 +78,84 @@ class _AddressState extends State<Address> {
                   elevation: 0,
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemCount: UserData.address != null ? l.length + 1 : 1,
-                      itemBuilder: (BuildContext context, int index) {
-                        return index <= l.length - 1
-                            ?Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ListTile(
-                                  trailing: Radio(
-                                    value: address,
-                                    groupValue: l[index]['address'],
-                                    onChanged: (v) {
+                    child: Container(
+                      
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        itemCount: UserData.address != null ? l.length + 1 : 1,
+                        itemBuilder: (BuildContext context, int index) {
+                          return index <= l.length - 1
+                              ?Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ListTile(
+                                    trailing: Radio(
+                                      value: address,
+                                      groupValue: l[index]['address'],
+                                      onChanged: (v) {
+                                        setState(() {
+                                          address = l[index]['address'];
+                                        });
+                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>CheckOut(widget.type,
+                                                        '${l[index]['name']}', '${l[index]['address']}',delivery, widget.sub, widget.saving, widget.total, widget.snapshot)));
+                                      },
+                                    ),
+                                    title: Text('${l[index]['name']}',style:  GoogleFonts.poppins(fontWeight: FontWeight.bold),),
+                                    subtitle: Padding(
+                                      padding: const EdgeInsets.only(top: 8),
+                                      child: Text('${l[index]['address']}',style:  GoogleFonts.poppins(fontWeight: FontWeight.bold)),
+                                    ),
+                                    onTap: () {
                                       setState(() {
                                         address = l[index]['address'];
                                       });
-                                      Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) =>CheckOut(widget.type,
-                                                      '${l[index]['name']}', '${l[index]['address']}',delivery, widget.sub, widget.saving, widget.total, widget.snapshot)));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  CheckOut(
+                                                      widget.type,
+                                                      '${l[index]['name']}',
+                                                      '${l[index]['address']}',
+                                                      delivery,
+                                                      widget.sub,
+                                                      widget.saving,
+                                                      widget.total,
+                                                      widget.snapshot)));
                                     },
                                   ),
-                                  title: Text('${l[index]['name']}',style:  GoogleFonts.poppins(fontWeight: FontWeight.bold),),
-                                  subtitle: Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: Text('${l[index]['address']}',style:  GoogleFonts.poppins(fontWeight: FontWeight.bold)),
-                                  ),
-                                  onTap: () {
-                                    setState(() {
-                                      address = l[index]['address'];
-                                    });
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                CheckOut(
-                                                    widget.type,
-                                                    '${l[index]['name']}',
-                                                    '${l[index]['address']}',
-                                                    delivery,
-                                                    widget.sub,
-                                                    widget.saving,
-                                                    widget.total,
-                                                    widget.snapshot)));
-                                  },
-                                ),
-                              ):index == l.length?Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      child: ListTile(
-                                        leading: Icon(Icons.local_shipping_outlined),
-                                        title: Text('Add Address',style:  GoogleFonts.poppins(),),
-                                        onTap: () {
-                                          _bottomSheet();
-                                        },
+                                ):index == l.length?Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        child: ListTile(
+                                          leading: Icon(Icons.local_shipping_outlined),
+                                          title: Text('Add Address',style:  GoogleFonts.poppins(),),
+                                          onTap: () {
+                                            _bottomSheet();
+                                          },
+                                        ),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.grey.shade300),
+                                            borderRadius: BorderRadius.circular(8)),
                                       ),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.grey.shade300),
-                                          borderRadius: BorderRadius.circular(8)),
-                                    ),
-                                  )
-                                :Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      child: ListTile(
-                                        leading: Icon(Icons.local_shipping_outlined),
-                                        title: Text('Add Address',style:  GoogleFonts.poppins(),),
-                                        onTap: () {
-                                          _bottomSheet();
-                                        },
+                                    )
+                                  :Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        child: ListTile(
+                                          leading: Icon(Icons.local_shipping_outlined),
+                                          title: Text('Add Address',style:  GoogleFonts.poppins(),),
+                                          onTap: () {
+                                            _bottomSheet();
+                                          },
+                                        ),
+                                        decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300),borderRadius: BorderRadius.circular(8)),
                                       ),
-                                      decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300),borderRadius: BorderRadius.circular(8)),
-                                    ),
-                                  );
-                      },
+                                    );
+                        },
+                      ),
                     ),
                   ),
                 ),

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/components/horizantol_card.dart';
-import 'package:delivery/model/data_provider.dart';
 import 'package:delivery/screens/Fliter_Products.dart';
 import 'package:delivery/screens/shops_search.dart';
 import 'package:delivery/utils/const.dart';
@@ -8,21 +7,26 @@ import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 
 class GrocerySection extends StatelessWidget {
+  final int radius;
   const GrocerySection({
     Key key,
+    this.radius =5,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var collectionReference = Firestore.instance.collection('Shops');
+    var collectionReference = Firestore.instance
+        .collection('Shops');
 
-    double radius = 50;
     String field = 'position';
     final geo = Geoflutterfire();
 
     Stream<List<DocumentSnapshot>> stream = geo
         .collection(collectionRef: collectionReference)
-        .within(center: geo.point(latitude: 26.5616517, longitude: 76.329175), radius: radius, field: field);
+        .within(
+            center: geo.point(latitude: 26.5616517, longitude: 76.329175),
+            radius: radius+0.0,
+            field: field);
     return StreamBuilder<List<DocumentSnapshot>>(
         stream: stream,
         builder: (context, snapshot) {

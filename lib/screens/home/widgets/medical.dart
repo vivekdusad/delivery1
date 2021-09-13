@@ -7,7 +7,9 @@ import 'package:delivery/utils/const.dart';
 import 'package:flutter/material.dart';
 
 class MedicalSection extends StatelessWidget {
+  final int radius;
   const MedicalSection({
+    this.radius,
     Key key,
   }) : super(key: key);
 

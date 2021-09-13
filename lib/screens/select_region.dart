@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/model/data_provider.dart';
+import 'package:delivery/utils/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home/home.dart';
 
@@ -11,6 +13,22 @@ class SelectRegion extends StatefulWidget {
 }
 
 class _SelectRegionState extends State<SelectRegion> {
+  double radius = 50;
+  String field = 'position';
+  final geo = Geoflutterfire();
+  var collectionReference = Firestore.instance.collection('Regions');
+  Stream<List<DocumentSnapshot>> stream;
+  @override
+  void initState() {
+    stream = geo
+        .collection(collectionRef: collectionReference)
+        .within(
+            center: geo.point(latitude: 26.5616517, longitude: 76.329175),
+            radius: radius,
+            field: field);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,36 +41,69 @@ class _SelectRegionState extends State<SelectRegion> {
             style: GoogleFonts.poppins(color: Color(0xff00D3FF)),
           ),
         ),
-        body: StreamBuilder<QuerySnapshot>(
-            stream: dataProvider.region(null),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListView.builder(
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      leading: Icon(Icons.location_on),
-                      title: Text(
-                        '${snapshot.data.documents[index]['region']}',
-                        style: GoogleFonts.poppins(color: Colors.black),
-                      ),
-                      onTap: () {
-                        _upload(
-                            snapshot.data.documents[index]['city'],
-                            snapshot.data.documents[index]['region'],
-                            snapshot.data.documents[index]['pincode'],
-                            '');
+        body: Stack(
+          children: [
+            StreamBuilder<List<DocumentSnapshot>>(
+                stream: stream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ListTile(
+                          leading: Icon(Icons.location_on),
+                          title: Text(
+                            '${snapshot.data[index].data['region']}',
+                            style: GoogleFonts.poppins(color: Colors.black),
+                          ),
+                          onTap: () {
+                            _upload(
+                                snapshot.data[index].data['city'],
+                                snapshot.data[index].data['region'],
+                                snapshot.data[index].data['pincode'],
+                                snapshot.data[index].data['delivery'],
+                                snapshot.data[index].data['radius'] ,                                
+                                );
+                          },
+                        );
                       },
                     );
-                  },
-                );
-              }
-              return Center(child: CircularProgressIndicator());
-            }));
+                  }
+                  return Center(child: CircularProgressIndicator());
+                }),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                padding: EdgeInsets.all(15),
+                child: Row(
+                  children: [
+                    Text(
+                      "Use Your Current Location",
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Spacer(),
+                    IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.location_searching,
+                          color: Colors.white,
+                        ))
+                  ],
+                ),
+                width: double.infinity,
+                color: blues,
+              ),
+            )
+          ],
+        ));
   }
 
   Future _upload(
-      String city, String region, String pinCode, String delivery) async {
+      String city, String region, String pinCode, String delivery,int raduis) async {
     showDialog(
         context: context,
         builder: (context) {
@@ -70,6 +121,7 @@ class _SelectRegionState extends State<SelectRegion> {
         'city': city,
         'region': region,
         'pincode': pinCode,
+        'radius':radius,
       }, merge: true);
       await UserData.getRegion();
       Navigator.pop(context);
